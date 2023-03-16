@@ -1,0 +1,92 @@
+﻿@model CreateViewModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Crossword";
+}
+<div class="col">
+    <div class="card mt-3">
+        <div class="card-body w-100  m-auto flex-column">
+            <table id="Questions" class="table-borderless m-auto">
+                <thead>
+                    <tr>
+                        <th scope="col" width="20px">#</th>
+                        <th scope="col">Question</th>
+                        <th scope="col">Answer</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var w in Model.FittedWords)
+                    {
+                        <tr>
+                            <th scope="row"></th>
+                            <td width="60%"><input type="text" name="Question" placeholder="Question" class="w-100" required value="@w.Value.Text" /></td>
+                            <td width="30%"><input type="text" name="Answer" placeholder="Answer" class="w-100" required value="@w.Key.Word" /></td>
+                            <td><button class="btn btn-danger" onclick="removeRow(this)">X</button></td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    @foreach (var w in Model.NotFittedWords)
+                    {
+                        <tr class="alert-danger">
+                            <th scope="row"></th>
+                            <td width="60%"><input type="text" placeholder="Question" class="w-100" required value="@w.Question" /></td>
+                            <td width="30%"><input type="text" placeholder="Answer" class="w-100" required value="@w.Answer" /></td>
+                            <td><button class="btn btn-danger" onclick="removeRow(this)">X</button></td>
+                        </tr>
+                    }
+                </tfoot>
+            </table>
+            <button class="btn btn-primary px-5 my-2 m-auto" onclick="addQuestion()">
+                <svg width="20" height="20">
+                    <rect x="7" width="6" height="100%" fill="white" />
+                    <rect y="7" width="100%" height="6" fill="white" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    <input type="button" value="Rebuild" class="btn btn-success m-2" onclick="submitQuestions()" />
+    <div class="card">
+        <div class="card-body m-auto">
+            <table id="Crossword" class="table-bordered m-auto">
+                <tbody>
+                    @for (int i = 0; i < Model.Crossword.GetLength(0); i++)
+                    {
+                        <tr>
+                            @for (int j = 0; j < Model.Crossword[i].Length; j++)
+                            {
+                                @if (Model.Crossword[i][j] != '\0' && Model.FittedWords.Any(w => w.Key.WordStartCol == i && w.Key.WordStartRow == j))
+                                {
+                                    var words = Model.FittedWords.Where(w => w.Key.WordStartCol == i && w.Key.WordStartRow == j).ToList();
+                                    <td width="40px" height="40px">
+                                        @if (words.Count()==2)
+                                        {
+                                            <sup>@(Model.FittedWords.IndexOf(words[1]) + 1)</sup>
+                                            @Model.Crossword[i][j]
+                                            <sup>@(Model.FittedWords.IndexOf(words[0]) + 1)</sup>
+                                        }
+                                        else
+                                        {
+                                            <sup>@(Model.FittedWords.IndexOf(words[0]) + 1)</sup>
+                                            @Model.Crossword[i][j]
+                                        }
+                                    </td>
+                                }
+                                else if (@Model.Crossword[i][j] != '\0')
+                                {
+                                    <td width="40px" height="40px">@Model.Crossword[i][j]</td>
+                                }
+                                else
+                                {
+                                    <td width="40px" height="40px" style="background-color:aqua"></td>
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <input type="submit" class="btn btn-success m-2" value="Save by link" onclick="saveCrossword()" />
+</div>

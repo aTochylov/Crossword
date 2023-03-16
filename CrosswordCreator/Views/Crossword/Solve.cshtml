@@ -1,0 +1,86 @@
+﻿@model SolveCrosswordViewModel
+
+<div class="text-center mt-4">
+    <div class="input-group">
+        <input type="text" class="form-control" disabled placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2" id="code" value="@Model.Code">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">Copy</button>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card mt-4">
+                <div class="card-body w-100 m-auto flex-column">
+                    <table class="table-borderless m-auto">
+                        <thead>
+                            <tr>
+                                <th scope="col" width="20px">#</th>
+                                <th scope="col">Questions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var q in Model.Words)
+                            {
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td width="60%" class="w-100 px-3" align="left">@q.Value.Text</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card mt-4 p-0">
+                <div class="card-body" style="overflow: auto;">
+                    <table class="table-bordered m-auto" id="Crossword">
+                        <tbody>
+                            @if (Model != null)
+                                @for (int i = 0; i < Model.Crossword.GetLength(0); i++)
+                                {
+                                    <tr>
+                                        @for (int j = 0; j < Model.Crossword[i].Length; j++)
+                                        {
+                                            @if (Model.Crossword[i][j] != '#' && Model.Words.Any(kv => kv.Key.WordStartCol == i && kv.Key.WordStartRow == j))
+                                            {
+                                                var words = @Model.Words.Where(kv => kv.Key.WordStartCol == i && kv.Key.WordStartRow == j).ToList();
+                                                <td width="50px" height="50px">
+                                                    @if (words.Count() == 2)
+                                                    {
+                                                        <sup>@(Model.Words.IndexOf(words[1]) + 1)</sup>
+                                                        <input type="text" maxlength="1" size="1" style="width:3ch; height:3ex; margin:auto; padding:0; text-align:center;" />
+                                                        <sup>@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                    }
+                                                    else
+                                                    {
+                                                        <sup>@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                        <input type="text" maxlength="1" size="1" style="width:3ch; height:3ex; margin:auto; padding:0; text-align:center;" />
+                                                    }
+                                                </td>
+                                            }
+                                            else if (@Model.Crossword[i][j] != '#')
+                                            {
+                                                <td width="50px" height="50px">
+                                                    <input type="text" maxlength="1" size="1" style="width:3ch; height:3ex; margin:auto; padding:0; text-align:center;" />
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td width="50px" height="50px" style="background-color:aqua">
+                                                    <input hidden type="text" maxlength="1" size="1" />
+                                                </td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <div>
+                        <input type="button" value="Submit" class="btn btn-success m-2" onclick="checkCrossword()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+﻿@model SaveCrosswordModel
+@{
+    ViewData["Title"] = "Crossword";
+}
+<div class="text-center">
+    <div id="partialView" class="container-fluid">
+        <div class="col">
+            <h1 class="m-auto">Create Your Own Crossword Puzzles with Our Easy-to-Use Tool!</h1>
+            <h5 class="m-auto p-5 w-75">
+                Are you a fan of crossword puzzles? Do you want to create your own puzzles to share with friends and family?
+                Our crossword generating website makes it easy to create custom puzzles that are fun and challenging.
+                With our intuitive tool, you can generate puzzles in just a few clicks</h5>
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h4>
+                        How to Use Our Crossword Generator
+                    </h4>
+                    <p class="w-75 m-auto">
+                        Our crossword generator is simple to use.
+                        Enter the words and clues you want to include in your puzzle. 
+                        Our algorithm will automatically generate a crossword puzzle that includes all of your words and clues!
+                    </p>
+                </div>
+                <form class="card-body w-100 m-auto flex-column">
+                    <table id="Questions" class="table-borderless m-auto">
+                        <thead>
+                            <tr>
+                                <th scope="col" width="20px">#</th>
+                                <th scope="col">Question</th>
+                                <th scope="col">Answer</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row"></th>
+                                <td width="60%"><input type="text" name="Question" required placeholder="Question" class="w-100" /></td>
+                                <td width="30%"><input type="text" name="Answer" required placeholder="Answer" class="w-100" /></td>
+                                <td><button class="btn btn-danger" onclick="removeRow(this)">X</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-primary px-5 my-2 m-auto" onclick="addQuestion()">
+                        <svg width="20" height="20">
+                            <rect x="7" width="6" height="100%" fill="white" />
+                            <rect y="7" width="100%" height="6" fill="white" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+            <input type="submit" value="Generate" class="btn btn-success m-2" onclick="submitQuestions()" />
+        </div>
+    </div>
+</div>

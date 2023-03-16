@@ -1,0 +1,94 @@
+﻿@model CheckViewModel
+<div class="text-center">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card mt-3">
+                <div class="card-body w-100 m-auto flex-column">
+                    <table class="table-borderless m-auto">
+                        <thead>
+                            <tr>
+                                <th scope="col" width="20px">#</th>
+                                <th scope="col">Question</th>
+                                <th scope="col">Answer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var q in Model.Words)
+                            {
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td width="60%" class="w-100 px-3" align="left">@q.Value.Text</td>
+                                    <td width="60%" class="w-100">@q.Key.Word</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card mt-3">
+                <div class="card-body m-auto">
+                    <table class="table-bordered m-auto" id="Crossword">
+                        <tbody>
+                            @if (Model != null)
+                                @for (int i = 0; i < Model.CorrectCrossword.GetLength(0); i++)
+                                {
+                                    <tr>
+                                        @for (int j = 0; j < Model.CorrectCrossword[i].Length; j++)
+                                        {
+                                            @if (Model.CorrectCrossword[i][j] != '#' && Model.Words.Any(kv => kv.Key.WordStartCol == i && kv.Key.WordStartRow == j))
+                                            {
+                                                var words = Model.Words.Where(kv => kv.Key.WordStartCol == i && kv.Key.WordStartRow == j).ToList();
+                                                @if(Model.CorrectCrossword[i][j] == Model.SolvedCrossword[i][j])
+                                                {
+                                                    <td width="40px" height="40px">
+                                                        @if (words.Count() == 2)
+                                                        {
+                                                            <sup>@(Model.Words.IndexOf(words[1]) + 1)</sup>
+                                                            @Model.CorrectCrossword[i][j]
+                                                            <sup>@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                        }
+                                                        else
+                                                        {
+                                                            <sup>@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                            @Model.CorrectCrossword[i][j]
+                                                        }
+                                                    </td>
+                                                }else{
+                                                    <td width="40px" height="40px" style="background-color: red;">
+                                                        @if (words.Count() == 2)
+                                                        {
+                                                            <sup>@(Model.Words.IndexOf(words[1]) + 1)</sup>
+                                                            @Model.SolvedCrossword[i][j]
+                                                            <sup>@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                        }
+                                                        else
+                                                        {
+                                                            <sup>@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                            @Model.SolvedCrossword[i][j]
+                                                        }
+                                                    </td>
+                                                }
+                                            }
+                                            else if (@Model.CorrectCrossword[i][j] != '#')
+                                            {
+                                                @if (Model.CorrectCrossword[i][j] == Model.SolvedCrossword[i][j])
+                                                {
+                                                    <td width="40px" height="40px" >@Model.CorrectCrossword[i][j]</td>
+                                                }else{
+                                                    <td width="40px" height="40px" style="background-color: red;">@Model.SolvedCrossword[i][j]</td>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <td width="40px" height="40px" style="background-color:aqua"></td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

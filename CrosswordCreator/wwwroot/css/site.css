@@ -1,0 +1,30 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+tbody {
+    counter-reset: row-num;
+}
+
+    tbody tr {
+        counter-increment: row-num;
+    }
+
+        tbody tr th:first-child::before {
+            content: counter(row-num);
+        }
