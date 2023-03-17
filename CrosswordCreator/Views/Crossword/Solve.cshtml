@@ -46,21 +46,21 @@
                                                 <td width="50px" height="50px">
                                                     @if (words.Count() == 2)
                                                     {
-                                                        <sup>@(Model.Words.IndexOf(words[1]) + 1)</sup>
-                                                        <input type="text" maxlength="1" size="1" style="width:3ch; height:3ex; margin:auto; padding:0; text-align:center;" />
-                                                        <sup>@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                        <sup class="supLeft">@(Model.Words.IndexOf(words[1]) + 1)</sup>
+                                                        <input type="text" class="form-control " maxlength="1" size="1" style="width:3ch; height:3ex; margin:auto; padding:0; text-align:center;" />
+                                                        <sup class="supRight">@(Model.Words.IndexOf(words[0]) + 1)</sup>
                                                     }
                                                     else
                                                     {
-                                                        <sup>@(Model.Words.IndexOf(words[0]) + 1)</sup>
-                                                        <input type="text" maxlength="1" size="1" style="width:3ch; height:3ex; margin:auto; padding:0; text-align:center;" />
+                                                        <sup class="supLeft">@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                        <input type="text" class="form-control " maxlength="1" size="1" style="width:3ch; height:3ex; margin:auto; padding:0; text-align:center;" />
                                                     }
                                                 </td>
                                             }
                                             else if (@Model.Crossword[i][j] != '#')
                                             {
                                                 <td width="50px" height="50px">
-                                                    <input type="text" maxlength="1" size="1" style="width:3ch; height:3ex; margin:auto; padding:0; text-align:center;" />
+                                                    <input type="text" maxlength="1" class="form-control " size="1" style="width:3ch; height:3ex; margin:auto; padding:0; text-align:center;" />
                                                 </td>
                                             }
                                             else

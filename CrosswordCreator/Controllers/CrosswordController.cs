@@ -51,7 +51,7 @@ namespace CrosswordCreator.Controllers
 
             dbService.AddCrossword(crosswordService.FittedWords, crosswordService.CrosswordArray, code);
 
-            return RedirectToAction("Solve", new { code = code });
+            return Ok(code);
         }
 
         public IActionResult Solve(string code)

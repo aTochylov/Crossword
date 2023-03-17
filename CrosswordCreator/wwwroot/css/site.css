@@ -28,3 +28,19 @@ tbody {
         tbody tr th:first-child::before {
             content: counter(row-num);
         }
+td {
+    position: relative;
+    text-align: center;
+}
+
+.supLeft {
+    position: absolute;
+    top: 15%;
+    left: 3%;
+}
+
+.supRight {
+    position: absolute;
+    top: 15%;
+    right: 3%;
+}

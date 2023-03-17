@@ -1,8 +1,8 @@
 ﻿function addQuestion() {
     let row = document.createElement("tr")
     row.innerHTML = "<th scope='row'></th>" +
-                "<td width='60%'><input type='text' name='Question' placeholder='Question' required class='w-100'/></td>"+
-        "<td width='30%'><input type='text' name='Answer' placeholder='Answer' required class='w-100'/></td>" +
+                "<td width='60%'><input type='text' name='Question' placeholder='Question' required class='form-control w-100'/></td>"+
+        "<td width='30%'><input type='text' name='Answer' placeholder='Answer' required class='form-control w-100'/></td>" +
         "<td><button class='btn btn-danger' onclick='removeRow(this)'>X</button></td>";
     document.getElementById('Questions').getElementsByTagName('tbody')[0].appendChild(row)
 }
@@ -76,7 +76,7 @@ function saveCrossword() {
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         data: data,
         success: function (result) {
-            $("#Body").html(result);
+            window.location = window.location.origin + '/crossword/solve/' + result;
         },
         error: function () {
             alert('error 500');
@@ -124,28 +124,23 @@ function checkCrossword() {
 
 var movingLeft = true;
 $(document).ready(function () {
-    // Get all the input elements in the table
     var inputs = $('#Crossword input');
 
-    // Add an event listener for the keyup event on the input elements
     inputs.on('keyup', function (e) {
-        // Get the current cell's column and row index
+
         var $cell = $(this).closest('td');
         var colIndex = $cell.index();
         var rowIndex = $cell.closest('tr').index();
 
-        // Get the next cell in the same row and the cell below in the same column
         var $nextCellInRow = $cell.next();
         var $cellBelow = $cell.closest('tr').next().find('td').eq(colIndex);
 
-        // If the user typed a letter, try to focus on the next cell in the same row
         if (e.keyCode >= 65 && e.keyCode <= 90) {
-            // If there is a next cell with a visible input element, set the focus to it
             if (movingLeft && $nextCellInRow.length && $nextCellInRow.find('input:visible').length) {
                 movingLeft = true;
                 $nextCellInRow.find('input:visible').focus();
             }
-            // If the next cell is hidden or there is no next cell, move focus to the cell below
+
             else if ($cellBelow.length && $cellBelow.find('input:visible').length) {
                 movingLeft = false;
                 $cellBelow.find('input:visible').focus();
@@ -153,7 +148,6 @@ $(document).ready(function () {
             if (!($cellBelow.length && $cellBelow.find('input:visible').length)) {
                 movingLeft = true;
             }
-            // If the next cell and the cell below are hidden or there is no next cell or cell below, do nothing
         }
     });
 });

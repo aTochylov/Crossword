@@ -1,11 +1,10 @@
-﻿@model SaveCrosswordModel
-@{
+﻿@{
     ViewData["Title"] = "Crossword";
 }
 <div class="text-center">
     <div id="partialView" class="container-fluid">
         <div class="col">
-            <h1 class="m-auto">Create Your Own Crossword Puzzles with Our Easy-to-Use Tool!</h1>
+            <h1 class="m-auto display-3">Create Your Own Crossword Puzzles with Our Easy-to-Use Tool!</h1>
             <h5 class="m-auto p-5 w-75">
                 Are you a fan of crossword puzzles? Do you want to create your own puzzles to share with friends and family?
                 Our crossword generating website makes it easy to create custom puzzles that are fun and challenging.
@@ -15,7 +14,7 @@
                     <h4>
                         How to Use Our Crossword Generator
                     </h4>
-                    <p class="w-75 m-auto">
+                    <p class="w-75 m-auto p-4">
                         Our crossword generator is simple to use.
                         Enter the words and clues you want to include in your puzzle. 
                         Our algorithm will automatically generate a crossword puzzle that includes all of your words and clues!
@@ -34,8 +33,8 @@
                         <tbody>
                             <tr>
                                 <th scope="row"></th>
-                                <td width="60%"><input type="text" name="Question" required placeholder="Question" class="w-100" /></td>
-                                <td width="30%"><input type="text" name="Answer" required placeholder="Answer" class="w-100" /></td>
+                                <td width="60%"><input type="text" name="Question" required placeholder="Question" class="form-control w-100" /></td>
+                                <td width="30%"><input type="text" name="Answer" required placeholder="Answer" class="form-control w-100" /></td>
                                 <td><button class="btn btn-danger" onclick="removeRow(this)">X</button></td>
                             </tr>
                         </tbody>

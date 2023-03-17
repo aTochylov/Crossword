@@ -40,31 +40,31 @@
                                                 var words = Model.Words.Where(kv => kv.Key.WordStartCol == i && kv.Key.WordStartRow == j).ToList();
                                                 @if(Model.CorrectCrossword[i][j] == Model.SolvedCrossword[i][j])
                                                 {
-                                                    <td width="40px" height="40px">
+                                                    <td width="40px" height="40px" style="background-color: lightgreen;">
                                                         @if (words.Count() == 2)
                                                         {
-                                                            <sup>@(Model.Words.IndexOf(words[1]) + 1)</sup>
+                                                            <sup class="supLeft">@(Model.Words.IndexOf(words[1]) + 1)</sup>
                                                             @Model.CorrectCrossword[i][j]
-                                                            <sup>@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                            <sup class="supRight">@(Model.Words.IndexOf(words[0]) + 1)</sup>
                                                         }
                                                         else
                                                         {
-                                                            <sup>@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                            <sup class ="supLeft">@(Model.Words.IndexOf(words[0]) + 1)</sup>
                                                             @Model.CorrectCrossword[i][j]
                                                         }
                                                     </td>
                                                 }else{
-                                                    <td width="40px" height="40px" style="background-color: red;">
+                                                    <td width="40px" height="40px" style="background-color: palevioletred;">
                                                         @if (words.Count() == 2)
                                                         {
-                                                            <sup>@(Model.Words.IndexOf(words[1]) + 1)</sup>
-                                                            @Model.SolvedCrossword[i][j]
-                                                            <sup>@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                            <sup class="supLeft">@(Model.Words.IndexOf(words[1]) + 1)</sup>
+                                                            @Model.CorrectCrossword[i][j]
+                                                            <sup class="supRight">@(Model.Words.IndexOf(words[0]) + 1)</sup>
                                                         }
                                                         else
                                                         {
-                                                            <sup>@(Model.Words.IndexOf(words[0]) + 1)</sup>
-                                                            @Model.SolvedCrossword[i][j]
+                                                            <sup class ="supLeft">@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                            @Model.CorrectCrossword[i][j]
                                                         }
                                                     </td>
                                                 }
@@ -73,9 +73,9 @@
                                             {
                                                 @if (Model.CorrectCrossword[i][j] == Model.SolvedCrossword[i][j])
                                                 {
-                                                    <td width="40px" height="40px" >@Model.CorrectCrossword[i][j]</td>
+                                                    <td width="40px" height="40px" style="background-color: lightgreen;">@Model.CorrectCrossword[i][j]</td>
                                                 }else{
-                                                    <td width="40px" height="40px" style="background-color: red;">@Model.SolvedCrossword[i][j]</td>
+                                                    <td width="40px" height="40px" style="background-color: palevioletred;">@Model.SolvedCrossword[i][j]</td>
                                                 }
                                             }
                                             else

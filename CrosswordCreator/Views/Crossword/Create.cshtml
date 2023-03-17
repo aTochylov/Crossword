@@ -20,8 +20,8 @@
                     {
                         <tr>
                             <th scope="row"></th>
-                            <td width="60%"><input type="text" name="Question" placeholder="Question" class="w-100" required value="@w.Value.Text" /></td>
-                            <td width="30%"><input type="text" name="Answer" placeholder="Answer" class="w-100" required value="@w.Key.Word" /></td>
+                            <td width="60%"><input type="text" name="Question" placeholder="Question" class="form-control w-100" required value="@w.Value.Text" /></td>
+                            <td width="30%"><input type="text" name="Answer" placeholder="Answer" class="form-control w-100" required value="@w.Key.Word" /></td>
                             <td><button class="btn btn-danger" onclick="removeRow(this)">X</button></td>
                         </tr>
                     }
@@ -31,8 +31,8 @@
                     {
                         <tr class="alert-danger">
                             <th scope="row"></th>
-                            <td width="60%"><input type="text" placeholder="Question" class="w-100" required value="@w.Question" /></td>
-                            <td width="30%"><input type="text" placeholder="Answer" class="w-100" required value="@w.Answer" /></td>
+                            <td width="60%"><input type="text" placeholder="Question" class="form-control w-100" required value="@w.Question" /></td>
+                            <td width="30%"><input type="text" placeholder="Answer" class="form-control w-100" required value="@w.Answer" /></td>
                             <td><button class="btn btn-danger" onclick="removeRow(this)">X</button></td>
                         </tr>
                     }
@@ -62,13 +62,13 @@
                                     <td width="40px" height="40px">
                                         @if (words.Count()==2)
                                         {
-                                            <sup>@(Model.FittedWords.IndexOf(words[1]) + 1)</sup>
+                                            <sup class="supLeft">@(Model.FittedWords.IndexOf(words[1]) + 1)</sup>
                                             @Model.Crossword[i][j]
-                                            <sup>@(Model.FittedWords.IndexOf(words[0]) + 1)</sup>
+                                            <sup class="supRight">@(Model.FittedWords.IndexOf(words[0]) + 1)</sup>
                                         }
                                         else
                                         {
-                                            <sup>@(Model.FittedWords.IndexOf(words[0]) + 1)</sup>
+                                            <sup class="supLeft">@(Model.FittedWords.IndexOf(words[0]) + 1)</sup>
                                             @Model.Crossword[i][j]
                                         }
                                     </td>
