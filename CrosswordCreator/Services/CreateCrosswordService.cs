@@ -32,21 +32,14 @@ namespace CrosswordCreator.Services
 
         public void AddList(IEnumerable<QuestionModel> answersQuestions)
         {
-            foreach (var item in answersQuestions)
-            {
-                TryAddWord(item.Answer, item.Question);
-            }
-            var notFitted = answersQuestions.Where(i => !_fitted.Keys.ToList()
-            .Any(a => a.Word == i.Answer.Trim().ToUpper()));
-
-            foreach (var item in notFitted)
-            {
-                TryAddWord(item.Answer, item.Question);
-            }
-            notFitted = answersQuestions.Where(i => !_fitted.Keys.ToList()
-            .Any(a => a.Word == i.Answer.Trim().ToUpper()));
-
-            NotFittedWords = notFitted.Select(p => new QuestionModel { Question = p.Question, Answer = p.Answer }).ToList();
+            Random r = new();
+            for(byte i = 0; i < 4; i++)
+                foreach (var item in answersQuestions.OrderBy(x=>r.Next()))  
+                    TryAddWord(item.Answer, item.Question);            
+            
+            NotFittedWords = answersQuestions.Where(i => !_fitted.Keys.ToList()
+            .Any(a => a.Word == i.Answer.Trim().ToUpper()))
+                .Select(p => new QuestionModel { Question = p.Question, Answer = p.Answer }).ToList();
         }
 
         private void SetStartIdxs()
@@ -54,6 +47,15 @@ namespace CrosswordCreator.Services
             _fitted.ToList().ForEach(p =>
             {
                 var wordStart = builder.GetStartIdxs(p.Key.Word);
+                if(wordStart == (-1, -1))
+                {
+                    NotFittedWords.Add(new()
+                    {
+                        Answer = p.Key.Word,
+                        Question = _fitted[p.Key].Text
+                    });
+                    _fitted.Remove(p.Key);
+                }
                 p.Key.WordStartCol = wordStart.Item1;
                 p.Key.WordStartRow = wordStart.Item2;
             });

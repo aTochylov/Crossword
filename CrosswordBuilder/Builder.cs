@@ -52,9 +52,9 @@ namespace CrosswordBuilder
                 if (new string(Crossword[i]).Contains(word))
                 {
                     sbyte startIdx = (sbyte)new string(Crossword[i]).IndexOf(word);
-                    if ((startIdx - 1 < 0 || IsNonAlpha(Crossword[i][startIdx - 1]))
+                    if ((startIdx - 1 < 0 || !Char.IsLetter(Crossword[i][startIdx - 1]))
                         && (startIdx + word.Length >= Crossword[i].Length - 1
-                        || IsNonAlpha(Crossword[i][startIdx + word.Length])))
+                        || !Char.IsLetter(Crossword[i][startIdx + word.Length])))
                         return (i, startIdx);
                 }
             }
@@ -62,8 +62,8 @@ namespace CrosswordBuilder
                 for (sbyte j = 0; j < Crossword[i].Length; j++)
                 {
                     if (Crossword[i][j] == word[0] && i + word.Length - 1 < Crossword.GetLength(0) &&
-                        (i - 1 < 0 || IsNonAlpha(Crossword[i - 1][j]))
-                        && (i + word.Length == Crossword.GetLength(0) || IsNonAlpha(Crossword[i + word.Length][j])))
+                        (i - 1 < 0 || !Char.IsLetter(Crossword[i - 1][j]))
+                        && (i + word.Length == Crossword.GetLength(0) || !Char.IsLetter(Crossword[i + word.Length][j])))
                         for (sbyte k = i, w = 0; k < Crossword.GetLength(0) && w < word.Length; k++, w++)
                         {
                             if (!word[w].Equals(Crossword[k][j]))
@@ -72,10 +72,8 @@ namespace CrosswordBuilder
                                 return (i, j);
                         }
                 }
-            throw new IndexOutOfRangeException($"{word}");
+            return (-1, -1);
         }
-
-        private bool IsNonAlpha(char c) => Regex.IsMatch(c.ToString(), @"[^a-zA-Z]");
 
         private bool FitsHorizontally((sbyte, sbyte) Place, string wordToFit, sbyte idxToFit)
         {
@@ -130,22 +128,22 @@ namespace CrosswordBuilder
 
         private Available isAvailableOnLeft((sbyte, sbyte) Place, string wordToFit, sbyte idxToFit)
         {
-            if (Place.Item2 - idxToFit - 1 >= 0 && !IsNonAlpha(Crossword[Place.Item1][Place.Item2 - idxToFit - 1]))
+            if (Place.Item2 - idxToFit - 1 >= 0 && Char.IsLetter(Crossword[Place.Item1][Place.Item2 - idxToFit - 1]))
                 return Available.False;
 
             if (idxToFit > 0 && Place.Item2 - 1 > 0 && Place.Item2 + 1 < Crossword[Place.Item1].Length && Place.Item1 - 1 > 0)
-                if (!IsNonAlpha(Crossword[Place.Item1 - 1][Place.Item2 - 1])
-                    || !IsNonAlpha(Crossword[Place.Item1 - 1][Place.Item2 + 1]))
+                if (Char.IsLetter(Crossword[Place.Item1 - 1][Place.Item2 - 1])
+                    || Char.IsLetter(Crossword[Place.Item1 - 1][Place.Item2 + 1]))
                     return Available.False;
 
             for (sbyte m = Place.Item2, n = idxToFit; n >= 0 && m >= 0; m--, n--)
             {
-                if ((m != Place.Item2 && Place.Item1 - 1 >= 0 && !IsNonAlpha(Crossword[Place.Item1 - 1][m]))
-                    || (m != Place.Item2 && Place.Item1 + 1 < Crossword.GetLength(0) && !IsNonAlpha(Crossword[Place.Item1 + 1][m])))
+                if ((m != Place.Item2 && Place.Item1 - 1 >= 0 && Char.IsLetter(Crossword[Place.Item1 - 1][m]))
+                    || (m != Place.Item2 && Place.Item1 + 1 < Crossword.GetLength(0) && Char.IsLetter(Crossword[Place.Item1 + 1][m])))
                     return Available.False;
                 if (n > 0 && m == 0)
                     return Available.ShortSpace;
-                if (m != Place.Item1 && !IsNonAlpha(Crossword[Place.Item1][m]) && Crossword[Place.Item1][m] != wordToFit[n])
+                if (Char.IsLetter(Crossword[Place.Item1][m]) && Crossword[Place.Item1][m] != wordToFit[n])
                     return Available.False;
             }
             return Available.True;
@@ -156,20 +154,20 @@ namespace CrosswordBuilder
             if (idxToFit < wordToFit.Length - 1 && Place.Item2 - 1 > 0
                 && Place.Item2 + 1 < Crossword[Place.Item1].Length && Place.Item1 + 1 < Crossword.GetLength(0))
 
-                if (!IsNonAlpha(Crossword[Place.Item1 + 1][Place.Item2 - 1])
-                    || !IsNonAlpha(Crossword[Place.Item1 + 1][Place.Item2 + 1]))
+                if (Char.IsLetter(Crossword[Place.Item1 + 1][Place.Item2 - 1])
+                    || Char.IsLetter(Crossword[Place.Item1 + 1][Place.Item2 + 1]))
                     return Available.False;
 
             for (sbyte m = Place.Item2, n = idxToFit; n <= wordToFit.Length; m++, n++)
             {
-                if ((m != Place.Item2 && Place.Item1 - 1 >= 0 && !IsNonAlpha(Crossword[Place.Item1 - 1][m]))
-                    || (m != Place.Item2 && Place.Item1 + 1 < Crossword.GetLength(0) && !IsNonAlpha(Crossword[Place.Item1 + 1][m])))
+                if ((m != Place.Item2 && Place.Item1 - 1 >= 0 && Char.IsLetter(Crossword[Place.Item1 - 1][m]))
+                    || (m != Place.Item2 && Place.Item1 + 1 < Crossword.GetLength(0) && Char.IsLetter(Crossword[Place.Item1 + 1][m])))
                     return Available.False;
                 if (n < wordToFit.Length && m == Crossword[Place.Item1].Length - 1)
                     return Available.ShortSpace;
-                if (n == wordToFit.Length && !IsNonAlpha(Crossword[Place.Item1][m]))
+                if (n == wordToFit.Length && Char.IsLetter(Crossword[Place.Item1][m]))
                     return Available.False;
-                if (n < wordToFit.Length && !IsNonAlpha(Crossword[Place.Item1][m]) && Crossword[Place.Item1][m] != wordToFit[n])
+                if (n < wordToFit.Length && Char.IsLetter(Crossword[Place.Item1][m]) && Crossword[Place.Item1][m] != wordToFit[n])
                     return Available.False;
             }
             return Available.True;
@@ -177,23 +175,18 @@ namespace CrosswordBuilder
 
         private Available isAvailableUp((sbyte, sbyte) Place, string wordToFit, sbyte idxToFit)
         {
-            if (Place.Item1 - idxToFit - 1 >= 0 && !IsNonAlpha(Crossword[Place.Item1 - idxToFit - 1][Place.Item2]))
+            if (Place.Item1 - idxToFit - 1 >= 0 && Char.IsLetter(Crossword[Place.Item1 - idxToFit - 1][Place.Item2]))
                 return Available.False;
-
-            if (idxToFit > 0 && Place.Item1 + 1 < Crossword.GetLength(0)
-                && Place.Item2 + 1 < Crossword[Place.Item1].Length && Place.Item1 - 1 >= 0 && Place.Item2 - 1 >= 0)
-                if (!IsNonAlpha(Crossword[Place.Item1 - 1][Place.Item2 - 1]) || !IsNonAlpha(Crossword[Place.Item1 - 1][Place.Item2 + 1]))
-                    return Available.False;
 
             for (sbyte m = Place.Item1, n = idxToFit; n >= 0 && m >= 0; m--, n--)
             {
                 if (m != Place.Item1)
-                    if ((Place.Item2 - 1 >= 0 && !IsNonAlpha(Crossword[m][Place.Item2 - 1]))
-                        || (Place.Item2 + 1 < Crossword[m].Length && !IsNonAlpha(Crossword[m][Place.Item2 + 1])))
+                    if ((Place.Item2 - 1 >= 0 && Char.IsLetter(Crossword[m][Place.Item2 - 1]))
+                        || (Place.Item2 + 1 < Crossword[m].Length && Char.IsLetter(Crossword[m][Place.Item2 + 1])))
                         return Available.False;
                 if (n > 0 && m == 0)
                     return Available.ShortSpace;
-                if (Crossword[m][Place.Item2] != wordToFit[n] && !IsNonAlpha(Crossword[m][Place.Item2]))
+                if (Crossword[m][Place.Item2] != wordToFit[n] && Char.IsLetter(Crossword[m][Place.Item2]))
                     return Available.False;
             }
             return Available.True;
@@ -201,27 +194,19 @@ namespace CrosswordBuilder
 
         private Available isAvailableDown((sbyte, sbyte) Place, string wordToFit, sbyte idxToFit)
         {
-            if (idxToFit < wordToFit.Length - 1 && Place.Item2 - 1 > 0
-                && Place.Item2 + 1 < Crossword[Place.Item1].Length && Place.Item1 + 1 < Crossword.GetLength(0))
-                if (!IsNonAlpha(Crossword[Place.Item1 + 1][Place.Item2 - 1])
-                    || !IsNonAlpha(Crossword[Place.Item1 + 1][Place.Item2 + 1]))
-                    return Available.False;
-
             if (Place.Item1 + (wordToFit.Length - idxToFit) < Crossword.GetLength(0)
-                && !IsNonAlpha(Crossword[Place.Item1 + (wordToFit.Length - idxToFit)][Place.Item2]))
+                && Char.IsLetter(Crossword[Place.Item1 + (wordToFit.Length - idxToFit)][Place.Item2]))
                 return Available.False;
 
             for (sbyte m = Place.Item1, n = idxToFit; n < wordToFit.Length; m++, n++)
             {
                 if (m != Place.Item1)
-                    if ((Place.Item2 - 1 >= 0 && !IsNonAlpha(Crossword[m][Place.Item2 - 1]))
-                    || (Place.Item2 + 1 < Crossword[m].Length && !IsNonAlpha(Crossword[m][Place.Item2 + 1])))
+                    if ((Place.Item2 - 1 >= 0 && Char.IsLetter(Crossword[m][Place.Item2 - 1]))
+                    || (Place.Item2 + 1 < Crossword[m].Length && Char.IsLetter(Crossword[m][Place.Item2 + 1])))
                         return Available.False;
-                if (m != Place.Item1 && m - 1 >= 0 && !IsNonAlpha(Crossword[m][Place.Item2]))
-                    return Available.False;
                 if (n < wordToFit.Length && m >= Crossword.GetLength(0) - 1)
                     return Available.ShortSpace;
-                if (Crossword[m][Place.Item2] != wordToFit[n] && !IsNonAlpha(Crossword[m][Place.Item2]))
+                if (Crossword[m][Place.Item2] != wordToFit[n] && Char.IsLetter(Crossword[m][Place.Item2]))
                     return Available.False;
             }
             return Available.True;
