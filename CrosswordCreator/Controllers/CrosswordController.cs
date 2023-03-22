@@ -1,10 +1,8 @@
 ﻿using CrosswordCreator.Data.Entities;
 using CrosswordCreator.Models;
 using CrosswordCreator.Services;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Linq;
 
 namespace CrosswordCreator.Controllers
 {
@@ -40,23 +38,28 @@ namespace CrosswordCreator.Controllers
             return PartialView(vm);
         }
 
-        public IActionResult Save(SaveCrosswordModel model)
+        public async Task<IActionResult> Save(SaveCrosswordModel model)
         {
             if (!ModelState.IsValid) return BadRequest("Incorrect input");
+
             crosswordService.CrosswordArray = model.Crossword;
             crosswordService.FittedWords = model.Questions.Select(aq =>
-                new KeyValuePair<Answer, Question>(new() { Word = aq.Answer }, new() { Text = aq.Question })).ToDictionary(x => x.Key, x => x.Value);
+                new KeyValuePair<Answer, Question>(new() { Word = aq.Answer }, new() { Text = aq.Question }))
+                .ToDictionary(x => x.Key, x => x.Value);
 
-            string code = Guid.NewGuid().ToString().Replace("-", "");
-
-            dbService.AddCrossword(crosswordService.FittedWords, crosswordService.CrosswordArray, code);
+            string code = Guid.NewGuid().ToString("N");
+            await dbService.AddCrossword(crosswordService.FittedWords, crosswordService.CrosswordArray, code);
 
             return Ok(code);
         }
 
+        [Route("crossword/solve/{code:length(32)}")]
         public IActionResult Solve(string code)
         {
             var crossword = dbService.GetCrosswordModel(code);
+            if(crossword is null) 
+                return NotFound($"No crossword with {code} code");
+
             SolveCrosswordViewModel vm = new()
             {
                 Code = code,
@@ -66,6 +69,7 @@ namespace CrosswordCreator.Controllers
             return View(vm);
         }
 
+        [Route("crossword/check/{code:length(32)}")]
         public IActionResult Check(string code, char[][] crossword)
         {
             var savedCrossw = dbService.GetCrosswordModel(code);

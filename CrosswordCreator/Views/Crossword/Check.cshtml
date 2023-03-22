@@ -8,8 +8,8 @@
                         <thead>
                             <tr>
                                 <th scope="col" width="20px">#</th>
-                                <th scope="col">Question</th>
-                                <th scope="col">Answer</th>
+                                <th scope="col" width="60%">Question</th>
+                                <th scope="col" width="60%">Answer</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -17,8 +17,8 @@
                             {
                                 <tr>
                                     <th scope="row"></th>
-                                    <td width="60%" class="w-100 px-3" align="left">@q.Value.Text</td>
-                                    <td width="60%" class="w-100">@q.Key.Word</td>
+                                    <td class="w-100 px-3" align="left">@q.Value.Text</td>
+                                    <td class="w-100">@q.Key.Word</td>
                                 </tr>
                             }
                         </tbody>
@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="card mt-3">
-                <div class="card-body m-auto">
+                <div class="card-body m-auto" style="overflow: auto;">
                     <table class="table-bordered m-auto" id="Crossword">
                         <tbody>
                             @if (Model != null)
@@ -35,12 +35,12 @@
                                     <tr>
                                         @for (int j = 0; j < Model.CorrectCrossword[i].Length; j++)
                                         {
-                                            @if (Model.CorrectCrossword[i][j] != '#' && Model.Words.Any(kv => kv.Key.WordStartCol == i && kv.Key.WordStartRow == j))
+                                            @if (!Model.CorrectCrossword[i][j].Equals('#') && Model.Words.Any(kv => kv.Key.WordStartCol == i && kv.Key.WordStartRow == j))
                                             {
                                                 var words = Model.Words.Where(kv => kv.Key.WordStartCol == i && kv.Key.WordStartRow == j).ToList();
-                                                @if(Model.CorrectCrossword[i][j] == Model.SolvedCrossword[i][j])
+                                                @if (Model.CorrectCrossword[i][j].Equals(Model.SolvedCrossword[i][j]))
                                                 {
-                                                    <td width="40px" height="40px" style="background-color: lightgreen;">
+                                                    <td style="background-color: lightgreen;">
                                                         @if (words.Count() == 2)
                                                         {
                                                             <sup class="supLeft">@(Model.Words.IndexOf(words[1]) + 1)</sup>
@@ -49,38 +49,42 @@
                                                         }
                                                         else
                                                         {
-                                                            <sup class ="supLeft">@(Model.Words.IndexOf(words[0]) + 1)</sup>
-                                                            @Model.CorrectCrossword[i][j]
-                                                        }
-                                                    </td>
-                                                }else{
-                                                    <td width="40px" height="40px" style="background-color: palevioletred;">
-                                                        @if (words.Count() == 2)
-                                                        {
-                                                            <sup class="supLeft">@(Model.Words.IndexOf(words[1]) + 1)</sup>
-                                                            @Model.CorrectCrossword[i][j]
-                                                            <sup class="supRight">@(Model.Words.IndexOf(words[0]) + 1)</sup>
-                                                        }
-                                                        else
-                                                        {
-                                                            <sup class ="supLeft">@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                            <sup class="supLeft">@(Model.Words.IndexOf(words[0]) + 1)</sup>
                                                             @Model.CorrectCrossword[i][j]
                                                         }
                                                     </td>
                                                 }
-                                            }
-                                            else if (@Model.CorrectCrossword[i][j] != '#')
-                                            {
-                                                @if (Model.CorrectCrossword[i][j] == Model.SolvedCrossword[i][j])
+                                                else
                                                 {
-                                                    <td width="40px" height="40px" style="background-color: lightgreen;">@Model.CorrectCrossword[i][j]</td>
-                                                }else{
-                                                    <td width="40px" height="40px" style="background-color: palevioletred;">@Model.SolvedCrossword[i][j]</td>
+                                                    <td style="background-color: palevioletred;">
+                                                        @if (words.Count() == 2)
+                                                        {
+                                                            <sup class="supLeft">@(Model.Words.IndexOf(words[1]) + 1)</sup>
+                                                            @Model.SolvedCrossword[i][j]
+                                                            <sup class="supRight">@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                        }
+                                                        else
+                                                        {
+                                                            <sup class="supLeft">@(Model.Words.IndexOf(words[0]) + 1)</sup>
+                                                            @Model.SolvedCrossword[i][j]
+                                                        }
+                                                    </td>
+                                                }
+                                            }
+                                            else if (!Model.CorrectCrossword[i][j].Equals('#'))
+                                            {
+                                                @if (Model.CorrectCrossword[i][j].Equals(Model.SolvedCrossword[i][j]))
+                                                {
+                                                    <td style="background-color: lightgreen;">@Model.CorrectCrossword[i][j]</td>
+                                                }
+                                                else
+                                                {
+                                                    <td style="background-color: palevioletred;">@Model.SolvedCrossword[i][j]</td>
                                                 }
                                             }
                                             else
                                             {
-                                                <td width="40px" height="40px" style="background-color:aqua"></td>
+                                                <td style="background-color:aqua"></td>
                                             }
                                         }
                                     </tr>

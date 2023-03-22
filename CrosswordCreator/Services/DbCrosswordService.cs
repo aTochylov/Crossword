@@ -1,6 +1,5 @@
 ﻿using CrosswordCreator.Data;
 using CrosswordCreator.Data.Entities;
-using CrosswordCreator.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CrosswordCreator.Services
@@ -17,8 +16,6 @@ namespace CrosswordCreator.Services
         public async Task AddCrossword(Dictionary<Answer, Question> answersQuestions, char[][] crossword, string code)
         {
             List<Row> rows = new List<Row>();
-            //for (int i = 0; i < crossword.GetLength(0); i++)
-            //    rows.Add(new string(crossword[i]));
             foreach (var r in crossword)
                 rows.Add(new() { Chars = new string(r) });
 

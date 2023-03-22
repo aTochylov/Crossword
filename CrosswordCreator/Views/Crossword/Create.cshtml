@@ -10,8 +10,8 @@
                 <thead>
                     <tr>
                         <th scope="col" width="20px">#</th>
-                        <th scope="col">Question</th>
-                        <th scope="col">Answer</th>
+                        <th scope="col" width="60%">Question</th>
+                        <th scope="col" width="30%">Answer</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -20,8 +20,8 @@
                     {
                         <tr>
                             <th scope="row"></th>
-                            <td width="60%"><input type="text" name="Question" placeholder="Question" class="form-control w-100" required value="@w.Value.Text" /></td>
-                            <td width="30%"><input type="text" name="Answer" placeholder="Answer" class="form-control w-100" required value="@w.Key.Word" /></td>
+                            <td><input type="text" name="Question" placeholder="Question" class="form-control w-100" required value="@w.Value.Text" /></td>
+                            <td><input type="text" name="Answer" placeholder="Answer" pattern="^[a-zA-Z\u0400-\u04ff]+$" class="form-control w-100" required value="@w.Key.Word" /></td>
                             <td><button class="btn btn-danger" onclick="removeRow(this)">X</button></td>
                         </tr>
                     }
@@ -31,8 +31,8 @@
                     {
                         <tr class="alert-danger">
                             <th scope="row"></th>
-                            <td width="60%"><input type="text" placeholder="Question" class="form-control w-100" required value="@w.Question" /></td>
-                            <td width="30%"><input type="text" placeholder="Answer" class="form-control w-100" required value="@w.Answer" /></td>
+                            <td><input type="text" placeholder="Question" class="form-control w-100" required value="@w.Question" /></td>
+                            <td><input type="text" placeholder="Answer" pattern="^[a-zA-Z\u0400-\u04ff]+$" class="form-control w-100" required value="@w.Answer" /></td>
                             <td><button class="btn btn-danger" onclick="removeRow(this)">X</button></td>
                         </tr>
                     }
@@ -48,7 +48,7 @@
     </div>
     <input type="button" value="Rebuild" class="btn btn-success m-2" onclick="submitQuestions()" />
     <div class="card">
-        <div class="card-body m-auto">
+        <div class="card-body m-auto" style="overflow: auto;">
             <table id="Crossword" class="table-bordered m-auto">
                 <tbody>
                     @for (int i = 0; i < Model.Crossword.GetLength(0); i++)
@@ -59,7 +59,7 @@
                                 @if (Model.Crossword[i][j] != '\0' && Model.FittedWords.Any(w => w.Key.WordStartCol == i && w.Key.WordStartRow == j))
                                 {
                                     var words = Model.FittedWords.Where(w => w.Key.WordStartCol == i && w.Key.WordStartRow == j).ToList();
-                                    <td width="40px" height="40px">
+                                    <td >
                                         @if (words.Count()==2)
                                         {
                                             <sup class="supLeft">@(Model.FittedWords.IndexOf(words[1]) + 1)</sup>
@@ -75,11 +75,11 @@
                                 }
                                 else if (@Model.Crossword[i][j] != '\0')
                                 {
-                                    <td width="40px" height="40px">@Model.Crossword[i][j]</td>
+                                    <td>@Model.Crossword[i][j]</td>
                                 }
                                 else
                                 {
-                                    <td width="40px" height="40px" style="background-color:aqua"></td>
+                                    <td style="background-color:aqua"></td>
                                 }
                             }
                         </tr>

@@ -15,7 +15,7 @@
                         <thead>
                             <tr>
                                 <th scope="col" width="20px">#</th>
-                                <th scope="col">Questions</th>
+                                <th scope="col" width="80%">Questions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -23,7 +23,7 @@
                             {
                                 <tr>
                                     <th scope="row"></th>
-                                    <td width="60%" class="w-100 px-3" align="left">@q.Value.Text</td>
+                                    <td class="w-100 px-3" align="left">@q.Value.Text</td>
                                 </tr>
                             }
                         </tbody>
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="card mt-4 p-0">
-                <div class="card-body" style="overflow: auto;">
+                <div class="card-body" style="overflow-x: auto;">
                     <table class="table-bordered m-auto" id="Crossword">
                         <tbody>
                             @if (Model != null)
@@ -43,29 +43,29 @@
                                             @if (Model.Crossword[i][j] != '#' && Model.Words.Any(kv => kv.Key.WordStartCol == i && kv.Key.WordStartRow == j))
                                             {
                                                 var words = @Model.Words.Where(kv => kv.Key.WordStartCol == i && kv.Key.WordStartRow == j).ToList();
-                                                <td width="50px" height="50px">
+                                                <td>
                                                     @if (words.Count() == 2)
                                                     {
                                                         <sup class="supLeft">@(Model.Words.IndexOf(words[1]) + 1)</sup>
-                                                        <input type="text" class="form-control " maxlength="1" size="1" style="width:3ch; height:3ex; margin:auto; padding:0; text-align:center;" />
+                                                        <input type="text" pattern="^[a-zA-Z\u0400-\u04ff]$" class="form-control cellInput" maxlength="1" size="1" />
                                                         <sup class="supRight">@(Model.Words.IndexOf(words[0]) + 1)</sup>
                                                     }
                                                     else
                                                     {
                                                         <sup class="supLeft">@(Model.Words.IndexOf(words[0]) + 1)</sup>
-                                                        <input type="text" class="form-control " maxlength="1" size="1" style="width:3ch; height:3ex; margin:auto; padding:0; text-align:center;" />
+                                                        <input type="text" pattern="^[a-zA-Z\u0400-\u04ff]$" class="form-control cellInput" maxlength="1" size="1" />
                                                     }
                                                 </td>
                                             }
                                             else if (@Model.Crossword[i][j] != '#')
                                             {
-                                                <td width="50px" height="50px">
-                                                    <input type="text" maxlength="1" class="form-control " size="1" style="width:3ch; height:3ex; margin:auto; padding:0; text-align:center;" />
+                                                <td>
+                                                    <input type="text" pattern="^[a-zA-Z\u0400-\u04ff]$" maxlength="1" class="form-control cellInput" size="1" />
                                                 </td>
                                             }
                                             else
                                             {
-                                                <td width="50px" height="50px" style="background-color:aqua">
+                                                <td style="background-color:aqua">
                                                     <input hidden type="text" maxlength="1" size="1" />
                                                 </td>
                                             }

@@ -2,7 +2,7 @@
     let row = document.createElement("tr")
     row.innerHTML = "<th scope='row'></th>" +
                 "<td width='60%'><input type='text' name='Question' placeholder='Question' required class='form-control w-100'/></td>"+
-        "<td width='30%'><input type='text' name='Answer' placeholder='Answer' required class='form-control w-100'/></td>" +
+        "<td width='30%'><input type='text' name='Answer' pattern='^[a-zA-Z\u0400-\u04ff]+$' placeholder='Answer' required class='form-control w-100'/></td>" +
         "<td><button class='btn btn-danger' onclick='removeRow(this)'>X</button></td>";
     document.getElementById('Questions').getElementsByTagName('tbody')[0].appendChild(row)
 }
@@ -102,7 +102,7 @@ function checkCrossword() {
 
         $(this).find('td').each(function (cellIndex) {
             var value = $(this).find("input").val();
-            crossword[rowIndex][cellIndex] = /^[a-zA-Z]$/.test(value) ? value : '#';
+            crossword[rowIndex][cellIndex] = /^[a-zA-Z\u0400-\u04ff]$/.test(value) ? value : '#';
         });
     });
 

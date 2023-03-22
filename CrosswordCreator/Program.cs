@@ -9,7 +9,8 @@ builder.Services.AddScoped<ICreateCrosswordService, CreateCrosswordService>();
 builder.Services.AddTransient<IDbCrosswordService, DbCrosswordService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<CrosswordDbContext>(options =>
-        options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CrosswordDb"));
+        //options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CrosswordDb"));
+        options.UseSqlite($"Data Source={builder.Environment.ContentRootPath}/crossword.db"));
 
 var app = builder.Build();
 

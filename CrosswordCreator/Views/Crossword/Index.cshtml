@@ -25,16 +25,16 @@
                         <thead>
                             <tr>
                                 <th scope="col" width="20px">#</th>
-                                <th scope="col">Question</th>
-                                <th scope="col">Answer</th>
+                                <th scope="col" width="60%">Question</th>
+                                <th scope="col" width="30%">Answer</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <th scope="row"></th>
-                                <td width="60%"><input type="text" name="Question" required placeholder="Question" class="form-control w-100" /></td>
-                                <td width="30%"><input type="text" name="Answer" required placeholder="Answer" class="form-control w-100" /></td>
+                                <td><input type="text" name="Question" required placeholder="Question" class="form-control w-100" /></td>
+                                <td><input type="text" name="Answer" pattern="^[a-zA-Z\u0400-\u04ff]+$" required placeholder="Answer" class="form-control w-100" /></td>
                                 <td><button class="btn btn-danger" onclick="removeRow(this)">X</button></td>
                             </tr>
                         </tbody>
